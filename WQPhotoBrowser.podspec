@@ -14,5 +14,6 @@ s.ios.framework  = 'UIKit'
 s.source_files  = "WQPhotoBrowser/*.{h,m}"
 
 s.dependency 'SDWebImage'
+s.ios.frameworks = 'Photos'
 
 end
