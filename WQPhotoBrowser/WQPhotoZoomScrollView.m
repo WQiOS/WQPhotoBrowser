@@ -9,6 +9,7 @@
 #import "WQPhotoZoomScrollView.h"
 #import "WQPhotoBrowserManager.h"
 #import "WQPhotoModel.h"
+#import <Photos/Photos.h>
 
 static CGFloat const kShowAnimationDuration = 0.3f;
 
@@ -162,7 +163,7 @@ static CGFloat const kShowAnimationDuration = 0.3f;
     frame.size.height = ceil(frame.size.height);
     frame.size.width = ceil(frame.size.width);
     UILabel *promptLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, frame.size.width+28, frame.size.height+20)];
-    promptLabel.center = CGPointMake(SCREEN_WIDTH/2, SCREEN_HEIGHT/2 + 40);
+    promptLabel.center = CGPointMake( [UIScreen mainScreen].bounds.size.width/2,  [UIScreen mainScreen].bounds.size.height/2 + 40);
     promptLabel.textAlignment = NSTextAlignmentCenter;
     promptLabel.text = title;
     promptLabel.font = [UIFont systemFontOfSize:16.0];
