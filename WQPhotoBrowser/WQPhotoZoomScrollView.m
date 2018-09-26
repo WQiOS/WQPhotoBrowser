@@ -124,16 +124,18 @@ static CGFloat const kShowAnimationDuration = 0.3f;
 - (void)longAction:(UITapGestureRecognizer *)sender {
     BOOL albumAuthorizationStatus = [self requestAlbumAuthorizationStatus];
     if (!albumAuthorizationStatus) {
-        
-    }else if (self.photoModel.thumbURLString && ([self.photoModel.thumbURLString containsString:@"png"] || [self.photoModel.thumbURLString containsString:@"jpg"])) {
+        [self creatPromptView:@"抱歉，暂无相册权限，请去设置中打开"];
+    }else if (!self.hasCommonView && self.photoModel.thumbURLString && ([self.photoModel.thumbURLString containsString:@"png"] || [self.photoModel.thumbURLString containsString:@"jpg"] || [self.photoModel.thumbURLString containsString:@"jpeg"])) {
         //gif暂时不做保存
         __weak __typeof(self)weakSelf = self;
+        self.hasCommonView = YES;
         [[SDWebImageManager sharedManager] loadImageWithURL:[NSURL URLWithString:self.photoModel.thumbURLString] options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize, NSURL * _Nullable targetURL) {
         } completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, SDImageCacheType cacheType, BOOL finished, NSURL * _Nullable imageURL) {
             __strong __typeof(weakSelf)strongSelf = weakSelf;
             UIImageWriteToSavedPhotosAlbum(image, strongSelf, @selector(image:didFinishSavingWithError:contextInfo:), NULL);
         }];
-    } else if (self.photoModel.image || self.photoModel.imageData) {
+    } else if (!self.hasCommonView && (self.photoModel.image || self.photoModel.imageData)) {
+        self.hasCommonView = YES;
         UIImage *image = self.photoModel.image;
         if (!image) {
             image = [UIImage imageWithData:self.photoModel.imageData];
@@ -155,10 +157,6 @@ static CGFloat const kShowAnimationDuration = 0.3f;
 
 //MARK: - 弹窗提示
 - (void)creatPromptView:(NSString *)title {
-    if (self.hasCommonView && (![title isKindOfClass:[NSString class]] || !title || !title.length)) {
-        return;
-    }
-    self.hasCommonView = YES;
     CGRect frame = [title boundingRectWithSize:CGSizeMake([UIScreen mainScreen].bounds.size.width - 20, CGFLOAT_MAX) options:NSStringDrawingTruncatesLastVisibleLine |NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:16.0]} context:nil];
     frame.size.height = ceil(frame.size.height);
     frame.size.width = ceil(frame.size.width);
@@ -173,9 +171,9 @@ static CGFloat const kShowAnimationDuration = 0.3f;
     promptLabel.layer.masksToBounds = YES;
     promptLabel.alpha = 1;
     [self.photoWindow addSubview:promptLabel];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         if (promptLabel) {
-            [UIView animateWithDuration:0.5 animations:^{
+            [UIView animateWithDuration:0.6 animations:^{
                 promptLabel.alpha = 0.1;
             } completion:^(BOOL finished) {
                 self.hasCommonView = NO;
@@ -213,7 +211,7 @@ static CGFloat const kShowAnimationDuration = 0.3f;
         }
         return;
     }
-    if (photoModel.thumbURLString && ([photoModel.thumbURLString containsString:@"png"] || [photoModel.thumbURLString containsString:@"jpg"] || [photoModel.thumbURLString containsString:@"gif"])) {
+    if (photoModel.thumbURLString && ([photoModel.thumbURLString containsString:@"png"] || [photoModel.thumbURLString containsString:@"jpg"] || [photoModel.thumbURLString containsString:@"jpeg"] || [photoModel.thumbURLString containsString:@"gif"])) {
         __weak __typeof(self)weakSelf = self;
         [self.activityIndicator startAnimating];
         [_imageView sd_setImageWithURL:[NSURL URLWithString:photoModel.thumbURLString] placeholderImage:placeholderImage completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
