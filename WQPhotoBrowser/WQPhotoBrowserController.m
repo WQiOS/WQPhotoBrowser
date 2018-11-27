@@ -28,13 +28,17 @@ typedef NS_ENUM(NSInteger, ZoomViewScrollDirection) {
 @property (nonatomic, strong) NSMutableDictionary *zoomViewCache;
 @property (nonatomic, assign) ZoomViewScrollDirection direction;
 @property (nonatomic, strong) WQPhotoGestureHandle *gestureHandle;
-
+@property (nonatomic, assign) BOOL isIPhoneX;
 @end
 @implementation WQPhotoBrowserController
 
 //MARK: - 生命周期
 - (void)viewDidLoad {
     [super viewDidLoad];
+
+    //MARK: - 判断iphoneX，XS（1125 X 2436px）、iPhone XS Max（1242 x 2688px）、iPhone XR（828 X 1792px）
+    _isIPhoneX = (([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1125,2436), [[UIScreen mainScreen] currentMode].size) : NO) || ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1242,2688), [[UIScreen mainScreen] currentMode].size) : NO) || ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(828,1792), [[UIScreen mainScreen] currentMode].size) : NO));
+
     [self solveImagesArrayData];
     [self initView];
     [self setupGestureHandle];
@@ -147,8 +151,8 @@ typedef NS_ENUM(NSInteger, ZoomViewScrollDirection) {
         [self.pageLabel setText:[NSString stringWithFormat:@"%ld/%ld", (long)_currentImageIndex + 1, (long)_imageCount]];
         [self.pageLabel sizeToFit];
         CGRect frame = self.pageLabel.frame;
-        frame.origin.y = [UIScreen mainScreen].bounds.size.height - 10 - frame.size.height;
-        frame.origin.x = [UIScreen mainScreen].bounds.size.width - 10 - frame.size.width;
+        frame.origin.y = [UIScreen mainScreen].bounds.size.height - (_isIPhoneX ? 30 : 10) - frame.size.height;
+        frame.origin.x = [UIScreen mainScreen].bounds.size.width - (_isIPhoneX ? 20 : 10) - frame.size.width;
         self.pageLabel.frame = frame;
     }
     if (index > -1 && index < _imageCount && _imageCount-index <= _imagesArray.count) {
