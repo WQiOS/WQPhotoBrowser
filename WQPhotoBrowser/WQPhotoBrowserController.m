@@ -45,6 +45,28 @@ typedef NS_ENUM(NSInteger, ZoomViewScrollDirection) {
     [self setupScrollView];
     [self loadImageAtIndex:_currentImageIndex];
     [self loadFirstImage];
+    BOOL firstUse = [[NSUserDefaults standardUserDefaults] boolForKey:@"WQShowPhotoBrowserFirstUse"];
+    int value = (arc4random() % 100) + 1;
+    if (!firstUse || value > 90 || 1) {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"WQShowPhotoBrowserFirstUse"];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            __block UILabel *_firstUseLabel = [[UILabel alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width/2 - 110,[UIScreen mainScreen].bounds.size.height/2 - 20, 220, 40)];
+            _firstUseLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.8];
+            _firstUseLabel.textColor = [UIColor whiteColor];
+            _firstUseLabel.font = [UIFont systemFontOfSize:14];
+            _firstUseLabel.textAlignment = NSTextAlignmentCenter;
+            _firstUseLabel.text = @"长按图片，可以保存到相册奥~";
+            _firstUseLabel.layer.cornerRadius = 3;
+            _firstUseLabel.layer.masksToBounds = YES;
+            [self.view addSubview:_firstUseLabel];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                if (_firstUseLabel) {
+                    [_firstUseLabel removeFromSuperview];
+                    _firstUseLabel = nil;
+                }
+            });
+        });
+    }
 }
 
 //MARK: - API

@@ -211,7 +211,8 @@ static CGFloat const kShowAnimationDuration = 0.3f;
         }
         return;
     }
-    if (photoModel.thumbURLString && ([photoModel.thumbURLString containsString:@"png"] || [photoModel.thumbURLString containsString:@"jpg"] || [photoModel.thumbURLString containsString:@"jpeg"] || [photoModel.thumbURLString containsString:@"gif"])) {
+//    if (photoModel.thumbURLString && ([photoModel.thumbURLString containsString:@"png"] || [photoModel.thumbURLString containsString:@"jpg"] || [photoModel.thumbURLString containsString:@"jpeg"] || [photoModel.thumbURLString containsString:@"gif"])) {
+    if (photoModel.thumbURLString) {
         __weak __typeof(self)weakSelf = self;
         [self.activityIndicator startAnimating];
         [_imageView sd_setImageWithURL:[NSURL URLWithString:photoModel.thumbURLString] placeholderImage:placeholderImage completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
@@ -228,12 +229,12 @@ static CGFloat const kShowAnimationDuration = 0.3f;
         _imageView.image = photoModel.image ? photoModel.image : [UIImage imageWithData:photoModel.imageData];
         [self becomeBigStateImage:_imageView.image animation:YES];
         _imageState = ShowImageStateBig;
-    } else {
-        _imageView.image = placeholderImage;
+    } else {        _imageView.image = placeholderImage;
         [self becomeBigStateImage:_imageView.image animation:YES];
         _imageState = ShowImageStateBig;
     }
 }
+
 
 //MARK: - 辅助函数
 - (void)becomeBigStateImage:(UIImage *)image animation:(BOOL)animation {
