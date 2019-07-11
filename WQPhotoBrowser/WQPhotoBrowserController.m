@@ -47,9 +47,9 @@ typedef NS_ENUM(NSInteger, ZoomViewScrollDirection) {
     [self loadFirstImage];
     BOOL firstUse = [[NSUserDefaults standardUserDefaults] boolForKey:@"WQShowPhotoBrowserFirstUse"];
     int value = (arc4random() % 100) + 1;
-    if (!firstUse || value > 90 || 1) {
+    if (!firstUse || value > 90) {
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"WQShowPhotoBrowserFirstUse"];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             __block UILabel *_firstUseLabel = [[UILabel alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width/2 - 110,[UIScreen mainScreen].bounds.size.height/2 - 20, 220, 40)];
             _firstUseLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.8];
             _firstUseLabel.textColor = [UIColor whiteColor];
