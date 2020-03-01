@@ -37,5 +37,4 @@ typedef NS_ENUM(NSInteger, ShowImageState) {
 - (void)showImageWithPhotoModel:(WQPhotoModel *)photoModel;
 - (void)dismissAnimation:(BOOL)animation;
 
-
 @end
