@@ -330,8 +330,7 @@ static CGFloat const kShowAnimationDuration = 0.3f;
         _activityIndicator.center = CGPointMake(self.frame.size.width*0.5, self.frame.size.height*0.5);
         _activityIndicator.tintColor = [UIColor grayColor];
         _activityIndicator.hidesWhenStopped = YES;
-        [self addSubview:_activityIndicator];
-        NSInteger a;
+        [self addSubview:_activityIndicator];        
     }
     return _activityIndicator;
 }
