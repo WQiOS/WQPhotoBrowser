@@ -24,6 +24,7 @@ static CGFloat const kShowAnimationDuration = 0.3f;
 
 @implementation WQPhotoZoomScrollView
 
+//MARK: - 生命周期
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
         _imageState = ShowImageStateSmall;
