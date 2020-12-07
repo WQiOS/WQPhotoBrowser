@@ -41,7 +41,6 @@ static CGFloat const kShowAnimationDuration = 0.3f;
     self.showsVerticalScrollIndicator = NO;
     self.showsHorizontalScrollIndicator = NO;
     self.delegate = self;
-    
     CGFloat imageViewW = [UIScreen mainScreen].bounds.size.width - 2 * 60;
     _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, imageViewW, imageViewW)];
     _imageView.center = CGPointMake(self.frame.size.width/2, self.frame.size.height/2);
