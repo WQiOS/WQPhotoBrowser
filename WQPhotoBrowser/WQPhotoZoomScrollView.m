@@ -51,6 +51,7 @@ static CGFloat const kShowAnimationDuration = 0.3f;
     [self addSubview:_imageView];
 }
 
+//MARK: - 添加手势
 - (void)addGestures {
     // 1 add double tap gesture
     UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didDoubleClick:)];
